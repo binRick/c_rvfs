@@ -1,5 +1,5 @@
 stringfn_lib = library('stringfn', 
-  '../../../submodules/c_stringfn/src/stringfn.c', 
+  '../../../submodules/c_stringfn/src/stringfn.c',
   install: false, dependencies: [], 
   include_directories: [
     '../../../submodules/c_stringfn/include',

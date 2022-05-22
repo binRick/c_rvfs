@@ -1,5 +1,7 @@
 #pragma once
 //////////////////////////////
+#include "../submodules/c_stringfn/include/stringfn.h"
+//////////////////////////////
 #include "../include/includes-base.h"
 //////////////////////////////
 #include "../deps/b64/b64.h"
@@ -7,7 +9,6 @@
 #include "../submodules/log.c/src/log.h"
 //////////////////////////////
 #include "../submodules/c_fsio/include/fsio.h"
-#include "../submodules/c_stringfn/include/stringfn.h"
 //////////////////////////////
 #include "../deps/commander/commander.h"
 #include "../deps/fs/fs.h"
@@ -18,7 +19,6 @@
 //////////////////////////////
 #include "../submodules/assertf.h/assertf.h"
 #include "../submodules/c_string_buffer/include/stringbuffer.h"
-#include "../submodules/csplit/csplit.h"
 #include "../submodules/csplit/csplit.h"
 #include "../submodules/dbg.h/dbg.h"
 #include "../submodules/djbhash/src/djbhash.h"

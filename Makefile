@@ -18,19 +18,39 @@ SED=$(shell command -v gsed||command -v sed)
 NODEMON=$(shell command -v nodemon)
 FZF=$(shell command -v fzf)
 BLINE=$(shell command -v bline)
+ANSI=$(shell command -v ansi)
+STAT=$(shell command -v stat)
 ##########################################################
 GC=$(GIT) clone --recurse-submodules
 GET_COMMIT=$(GIT) log -q |grep '^commit '|head -n1|cut -d' ' -f2
 ##########################################################
 TEST_TITLE=$(BLINE) -a bold:underline:italic:yellow
 HELP_STYLE=$(BLINE) -H -a ff00ff
+RVFS1_STYLE=$(BLINE) -a bold:italic:blue
 ##########################################################
+##//##//##//##//##//##//##//##//##//##//##//##	
 DEV_MAKE_TARGETS = \
-               		clean \
                		build
 DEV_TEST_TARGETS = \
 				   test \
-				   test-rvfs_e
+				   test-rvfs_e \
+				   test-rvfs1
+##//##//##//##//##//##//##//##//##//##//##//##	
+test-rvfs1:
+	@if [[ -f /tmp/rvfs1-src.rvfs ]]; then  unlink /tmp/rvfs1-src.rvfs; fi
+	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi
+	@./build/rvfs1 --help | $(TEST_TITLE)
+	@./build/rvfs1 package ./src /tmp/rvfs1-src.rvfs
+	@./build/rvfs1 show /tmp/rvfs1-src.rvfs
+	@./build/rvfs1 filesqty ////BAD-FILENAME || { $(ANSI) --green --bold -n "OK> " && $(ANSI) --red --bg-black --bold POSITIVE-FAILURE-CASE-0; }
+	@./build/rvfs1 filesqty /tmp/rvfs1-src.rvfs
+	@./build/rvfs1 filenames /tmp/rvfs1-src.rvfs
+	@[[ -d /tmp/rvfs_e ]] || mkdir /tmp/rvfs1
+	@./build/rvfs_e extract /tmp/rvfs1-src.rvfs /tmp/rvfs1|$(RVFS1_STYLE)
+	@{ find /tmp/rvfs1 -type f|xargs -I {} $(STAT) -c '%30n -> %sb' {}; } | $(BLINE) -a bold:yellow
+	@if [[ -f /tmp/rvfs1-src.rvfs ]]; then  unlink /tmp/rvfs1-src.rvfs; fi
+	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi
+	@$(ANSI) --green "test-rvfs1 Tests OK"
 ##########################################################
 enabled-bins:
 	@grep 'MESON_BIN_ENABLED=true' bins/*.c|cut -d: -f1|sort -u|xargs -I % basename % .c
