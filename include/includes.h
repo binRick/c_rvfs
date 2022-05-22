@@ -1,15 +1,15 @@
 #pragma once
 //////////////////////////////
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
 #define DBG_H_DEF_ONCE
 #define DBG_H_NO_WARNING
 #define ASSERTF_DEF_ONCE
+#define LOG_LEVEL    ERROR
 //////////////////////////////
 #include "../include/includes-base.h"
 //////////////////////////////
 #include "../deps/b64/b64.h"
+#include "../submodules/ansicodes/ansicodes.h"
+#include "../submodules/log.c/src/log.h"
 //////////////////////////////
 #include "../submodules/c_fsio/include/fsio.h"
 #include "../submodules/c_stringfn/include/stringfn.h"

@@ -1,5 +1,9 @@
 project('pman',          ['c'],         version : '0.0.1',         default_options : ['warning_level=0','c_std=gnu99'])
 add_project_arguments('-D_GNU_SOURCE', language : 'c')
+add_project_arguments('-DDBG_H_DEF_ONCE', language : 'c')
+add_project_arguments('-DDBG_H_NO_WARNING', language : 'c')
+add_project_arguments('-DASSERTF_DEF_ONCE', language : 'c')
+add_project_arguments('-DLOG_USE_COLOR', language : 'c')
 add_project_arguments('-Wno-pragma-once-outside-header', language : 'c')
 #//***********************************************************/
 deps = []

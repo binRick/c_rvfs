@@ -26,7 +26,7 @@ TEST_TITLE=$(BLINE) -a bold:underline:italic:yellow
 HELP_STYLE=$(BLINE) -H -a ff00ff
 ##########################################################
 DEV_MAKE_TARGETS = \
-					clean \
+               		clean \
                		build
 DEV_TEST_TARGETS = \
 				   test \

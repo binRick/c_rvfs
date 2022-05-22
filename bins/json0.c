@@ -1,5 +1,5 @@
-#include "../src/includes.c"
 // MESON_BIN_ENABLED=true
+#include "../src/includes.c"
 
 
 void persistence_example(const char *name) {

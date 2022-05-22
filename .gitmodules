@@ -142,3 +142,9 @@
 [submodule "submodules/fsio"]
 	path = submodules/fsio
 	url = https://github.com/sagiegurari/c_fsio
+[submodule "submodules/ansicodes"]
+	path = submodules/ansicodes
+	url = https://github.com/mlabbe/ansicodes
+[submodule "submodules/log.c"]
+	path = submodules/log.c
+	url = https://github.com/rxi/log.c
