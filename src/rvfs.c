@@ -1,10 +1,4 @@
-#include <dirent.h>
-#include <rvfs/rvfs.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include "../src/includes.c"
 
 static unsigned int f_exists(const char *filepath) {
   return access(filepath, F_OK) == 0;

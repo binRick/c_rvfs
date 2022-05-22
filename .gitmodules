@@ -1,0 +1,138 @@
+[submodule "submodules/cembed"]
+	path = submodules/cembed
+	url = https://github.com/rxi/cembed
+[submodule "submodules/dbg.h"]
+	path = submodules/dbg.h
+	url = https://github.com/leiless/dbg.h
+[submodule "submodules/debug_print_h"]
+	path = submodules/debug_print_h
+	url = git@github.com:binRick/debug_print_h.git
+[submodule "submodules/c_printf"]
+	path = submodules/c_printf
+	url = git@github.com:binRick/c_printf.git
+[submodule "submodules/generic-print"]
+	path = submodules/generic-print
+	url = https://github.com/exebook/generic-print
+[submodule "submodules/csv_parser"]
+	path = submodules/csv_parser
+	url = https://github.com/semitrivial/csv_parser
+[submodule "submodules/c_string_buffer"]
+	path = submodules/c_string_buffer
+	url = https://github.com/sagiegurari/c_string_buffer
+[submodule "submodules/ctable"]
+	path = submodules/ctable
+	url = https://github.com/PHochmann/ctable
+[submodule "submodules/c_stringfn"]
+	path = submodules/c_stringfn
+	url = https://github.com/sagiegurari/c_stringfn
+[submodule "submodules/spin"]
+	path = submodules/spin
+	url = https://github.com/charles-l/spin
+[submodule "submodules/assertf.h"]
+	path = submodules/assertf.h
+	url = https://github.com/leiless/assertf.h
+[submodule "submodules/env.h"]
+	path = submodules/env.h
+	url = https://github.com/4thel00z/env.h
+[submodule "submodules/timequick"]
+	path = submodules/timequick
+	url = https://github.com/mbarbar/timequick
+[submodule "submodules/subprocess.h"]
+	path = submodules/subprocess.h
+	url = https://github.com/sheredom/subprocess.h
+[submodule "submodules/tiny-AES-c"]
+	path = submodules/tiny-AES-c
+	url = https://github.com/kokke/tiny-AES-c
+[submodule "submodules/libterminput"]
+	path = submodules/libterminput
+	url = https://github.com/maandree/libterminput
+[submodule "submodules/subhook"]
+	path = submodules/subhook
+	url = https://github.com/Zeex/subhook
+[submodule "submodules/bestline"]
+	path = submodules/bestline
+	url = https://github.com/jart/bestline
+[submodule "submodules/scriptexec"]
+	path = submodules/scriptexec
+	url = https://github.com/sagiegurari/c_scriptexec
+[submodule "submodules/fsio"]
+	path = submodules/fsio
+	url = https://github.com/sagiegurari/c_fsio
+[submodule "submodules/memtrace"]
+	path = submodules/memtrace
+	url = https://github.com/mfederczuk/memtrace
+[submodule "submodules/libconfuse"]
+	path = submodules/libconfuse
+	url = https://github.com/libconfuse/libconfuse
+[submodule "submodules/liblogger"]
+	path = submodules/liblogger
+	url = https://github.com/briandowns/liblogger
+[submodule "submodules/tiny-regex-c"]
+	path = submodules/tiny-regex-c
+	url = https://github.com/kokke/tiny-regex-c
+[submodule "submodules/progressbar"]
+	path = submodules/progressbar
+	url = https://github.com/doches/progressbar
+[submodule "submodules/simpleconf"]
+	path = submodules/simpleconf
+	url = https://github.com/jedisct1/simpleconf
+[submodule "submodules/wildcardcmp"]
+	path = submodules/wildcardcmp
+	url = https://github.com/clibs/wildcardcmp
+[submodule "submodules/uptime"]
+	path = submodules/uptime
+	url = https://github.com/qwercik/uptime
+[submodule "submodules/tempdir"]
+	path = submodules/tempdir
+	url = https://github.com/stephenmathieson/tempdir.c
+[submodule "submodules/path_module"]
+	path = submodules/path_module
+	url = https://github.com/PrajwalCH/path_module
+[submodule "submodules/dirname"]
+	path = submodules/dirname
+	url = https://github.com/prodisDown/dirname
+[submodule "submodules/c_forever"]
+	path = submodules/c_forever
+	url = https://github.com/sagiegurari/c_forever
+[submodule "submodules/c_hs"]
+	path = submodules/c_hs
+	url = https://github.com/sagiegurari/c_hs
+[submodule "submodules/flingfd"]
+	path = submodules/flingfd
+	url = https://github.com/sharvil/flingfd
+[submodule "submodules/va_args_count"]
+	path = submodules/va_args_count
+	url = https://github.com/donmccaughey/va_args_count
+[submodule "submodules/c_eventemitter"]
+	path = submodules/c_eventemitter
+	url = https://github.com/sagiegurari/c_eventemitter
+[submodule "submodules/djbhash"]
+	path = submodules/djbhash
+	url = https://github.com/gdi/djbhash
+[submodule "submodules/socket99"]
+	path = submodules/socket99
+	url = https://github.com/silentbicycle/socket99
+[submodule "submodules/path-join.c"]
+	path = submodules/path-join.c
+	url = https://github.com/stephenmathieson/path-join.c
+[submodule "submodules/str-ends-with"]
+	path = submodules/str-ends-with
+	url = https://github.com/stephenmathieson/str-ends-with.c
+[submodule "submodules/https_client"]
+	path = submodules/https_client
+	url = https://github.com/HISONA/https_client
+[submodule "submodules/expand-braces"]
+	path = submodules/expand-braces
+	url = https://github.com/stephenmathieson/expand-braces.c
+[submodule "submodules/csplit"]
+	path = submodules/csplit
+	url = https://github.com/jwlodek/csplit
+[submodule "submodules/boydemdb"]
+	path = submodules/boydemdb
+	url = https://github.com/dimkr/boydemdb
+[submodule "submodules/colorin"]
+	path = submodules/colorin
+	url = https://github.com/Lunlumo-ex-machina/colorin
+[submodule "submodules/sqlite"]
+	path = submodules/sqlite
+	url = https://github.com/sqlite/sqlite
