@@ -1,44 +1,51 @@
 #include "../src/includes.c"
 
+
 static unsigned int f_exists(const char *filepath) {
-  return access(filepath, F_OK) == 0;
+  return(access(filepath, F_OK) == 0);
 }
+
 
 static unsigned int is_directory(const char *filepath) {
   struct stat statbuf;
-  if (stat(filepath, &statbuf) != 0)
-    return 0;
-  return S_ISDIR(statbuf.st_mode);
+
+  if (stat(filepath, &statbuf) != 0) {
+    return(0);
+  }
+  return(S_ISDIR(statbuf.st_mode));
 }
 
+
 void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
-  if (!filepath)
+  if (!filepath) {
     return;
+  }
   f->filepath_length = strlen(filepath);
-  f->filepath = strdup(filepath);
-  f->bytes = 0;
-  f->name = name ? strdup(name) : 0;
-  f->name_length = name ? strlen(name) : 0;
+  f->filepath        = strdup(filepath);
+  f->bytes           = 0;
+  f->name            = name ? strdup(name) : 0;
+  f->name_length     = name ? strlen(name) : 0;
   if (!f_exists(filepath)) {
     f->size = 0;
     return;
   }
-  f->is_directory = is_directory(filepath);
+  f->is_directory    = is_directory(filepath);
   f->children_length = 0;
 
   if (f->is_directory) {
-    DIR *pdir = opendir(f->filepath);
+    DIR           *pdir = opendir(f->filepath);
 
     struct dirent *d = 0;
     while ((d = readdir(pdir))) {
-      if (d->d_name[0] == '.')
+      if (d->d_name[0] == '.') {
         continue;
+      }
       char *buff = (char *)calloc(strlen(filepath) + strlen(d->d_name) + 2,
                                   sizeof(char));
       sprintf(buff, "%s/%s", filepath, d->d_name);
       f->children_length += 1;
-      f->children = (RVFSFile *)realloc(f->children,
-                                        f->children_length * sizeof(RVFSFile));
+      f->children         = (RVFSFile *)realloc(f->children,
+                                                f->children_length * sizeof(RVFSFile));
       RVFSFile child = {};
       rvfs_create_from(&child, buff, d->d_name);
       memcpy(&f->children[f->children_length - 1], &child, sizeof(child));
@@ -46,16 +53,17 @@ void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
       free(buff);
     }
 
-    if (pdir)
+    if (pdir) {
       closedir(pdir);
+    }
     return;
   }
 
-  uint32_t read_bytes = 0;
-  const uint32_t bufflen = 1;
-  uint8_t tmp[bufflen];
+  uint32_t       read_bytes = 0;
+  const uint32_t bufflen    = 1;
+  uint8_t        tmp[bufflen];
 
-  FILE *fp = fopen(filepath, "rb");
+  FILE           *fp = fopen(filepath, "rb");
 
   while ((read_bytes = fread(tmp, bufflen, sizeof(uint8_t), fp)) != 0) {
     f->size += read_bytes;
@@ -66,7 +74,8 @@ void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
   printf("Packaged %d bytes.\n", f->size);
 
   fclose(fp);
-}
+} /* rvfs_create_from */
+
 
 void _rvfs_write(RVFSFile *f, FILE *fp) {
   fwrite(&f->filepath_length, sizeof(uint32_t), 1, fp);
@@ -83,11 +92,14 @@ void _rvfs_write(RVFSFile *f, FILE *fp) {
   }
 }
 
+
 void rvfs_write(RVFSFile *f, const char *filepath) {
   FILE *fp = fopen(filepath, "wb");
+
   _rvfs_write(f, fp);
   fclose(fp);
 }
+
 
 void _rvfs_read(RVFSFile *f, FILE *fp) {
   fread(&f->filepath_length, sizeof(uint32_t), 1, fp);
@@ -111,14 +123,18 @@ void _rvfs_read(RVFSFile *f, FILE *fp) {
   }
 }
 
+
 void rvfs_read(RVFSFile *f, const char *filepath) {
   FILE *fp = fopen(filepath, "rb");
+
   _rvfs_read(f, fp);
   fclose(fp);
 }
 
-void _rvfs_from_bytes(RVFSFile* f, uint8_t* raw_bytes, long unsigned int* ij) {
+
+void _rvfs_from_bytes(RVFSFile *f, uint8_t *raw_bytes, long unsigned int *ij) {
   unsigned long int i = *ij;
+
   memcpy(&f->filepath_length, &raw_bytes[i], sizeof(uint32_t) * 1);
   i += sizeof(uint32_t);
 
@@ -156,15 +172,19 @@ void _rvfs_from_bytes(RVFSFile* f, uint8_t* raw_bytes, long unsigned int* ij) {
   }
 }
 
-void rvfs_from_bytes(RVFSFile* f, uint8_t* raw_bytes, uint32_t len) {
+
+void rvfs_from_bytes(RVFSFile *f, uint8_t *raw_bytes, uint32_t len) {
   long unsigned int ij = 0;
+
   _rvfs_from_bytes(f, raw_bytes, &ij);
   // TODO: implement
 }
 
+
 void rvfs_extract(RVFSFile *f, const char *filepath) {
-  if (!filepath)
+  if (!filepath) {
     return;
+  }
   if (f->size && f->bytes) {
     FILE *fp = fopen(filepath, "wb");
     fwrite(&f->bytes[0], sizeof(uint8_t), f->size, fp);
@@ -174,10 +194,11 @@ void rvfs_extract(RVFSFile *f, const char *filepath) {
 
   for (uint32_t i = 0; i < f->children_length; i++) {
     RVFSFile child = f->children[i];
-    if (!child.name)
+    if (!child.name) {
       continue;
+    }
     char *buff =
-        (char *)calloc(strlen(filepath) + child.name_length + 16, sizeof(char));
+      (char *)calloc(strlen(filepath) + child.name_length + 16, sizeof(char));
     if (!buff) {
       continue;
     }
@@ -187,13 +208,14 @@ void rvfs_extract(RVFSFile *f, const char *filepath) {
   }
 }
 
+
 RVFSFile *_rvfs_get_file(RVFSFile *f, char *tok) {
   if (f->name && tok && strcmp(f->name, tok) == 0) {
-    return f;
+    return(f);
   }
 
   if (f->filepath && tok && strcmp(f->filepath, tok) == 0) {
-    return f;
+    return(f);
   }
 
   if (f->children && f->children_length) {
@@ -201,41 +223,50 @@ RVFSFile *_rvfs_get_file(RVFSFile *f, char *tok) {
       RVFSFile *child = &f->children[i];
       RVFSFile *found = _rvfs_get_file(child, tok);
 
-      if (found)
-        return found;
+      if (found) {
+        return(found);
+      }
     }
   }
 
-  return 0;
+  return(0);
 }
 
-RVFSFile *rvfs_get_file(RVFSFile *f, const char *filepath) {
-  char *copypath = strdup(filepath);
-  char *tok = strtok(copypath, "/");
-  RVFSFile* ff = _rvfs_get_file(f, tok);
 
-  RVFSFile* found = ff;
+RVFSFile *rvfs_get_file(RVFSFile *f, const char *filepath) {
+  char     *copypath = strdup(filepath);
+  char     *tok      = strtok(copypath, "/");
+  RVFSFile *ff       = _rvfs_get_file(f, tok);
+
+  RVFSFile *found = ff;
+
   while (tok != 0 && ff != 0) {
-    ff = _rvfs_get_file(ff, tok);
+    ff  = _rvfs_get_file(ff, tok);
     tok = strtok(0, "/");
-    if (ff) found = ff;
+    if (ff) {
+      found = ff;
+    }
   }
 
   free(copypath);
 
-  return found;
-
+  return(found);
 }
 
+
 void rvfs_free(RVFSFile *f) {
-  if (!f)
+  if (!f) {
     return;
-  if (f->filepath)
+  }
+  if (f->filepath) {
     free(f->filepath);
-  if (f->name)
+  }
+  if (f->name) {
     free(f->name);
-  if (f->bytes)
+  }
+  if (f->bytes) {
     free(f->bytes);
+  }
 
   if (f->children && f->children_length) {
     for (uint32_t i = 0; i < f->children_length; i++) {
@@ -249,29 +280,33 @@ void rvfs_free(RVFSFile *f) {
   }
 }
 
-int _rvfs_show(RVFSFile* f, char* filepath) {
-  if (f == 0) return 1;
-    if (f->children && f->children_length) {
-      for (uint32_t i = 0; i < f->children_length; i++) {
-        RVFSFile child = f->children[i];
-        char* newpath = (char*)calloc((filepath ? strlen(filepath) : 0) + strlen(child.name) + 16, sizeof(char));
 
-        if (filepath) {
-          strcat(newpath, filepath);
-          strcat(newpath, "/");
-        }
-        strcat(newpath, child.name);
-        printf("%d\t%d\t%s\n", child.is_directory, child.size, newpath);
-        _rvfs_show(&child, newpath);
-        free(newpath);
+int _rvfs_show(RVFSFile *f, char *filepath) {
+  if (f == 0) {
+    return(1);
+  }
+  if (f->children && f->children_length) {
+    for (uint32_t i = 0; i < f->children_length; i++) {
+      RVFSFile child    = f->children[i];
+      char     *newpath = (char *)calloc((filepath ? strlen(filepath) : 0) + strlen(child.name) + 16, sizeof(char));
+
+      if (filepath) {
+        strcat(newpath, filepath);
+        strcat(newpath, "/");
       }
+      strcat(newpath, child.name);
+      printf("%d\t%d\t%s\n", child.is_directory, child.size, newpath);
+      _rvfs_show(&child, newpath);
+      free(newpath);
     }
+  }
 
-    return 0;
+  return(0);
 }
 
-int rvfs_show(RVFSFile* f) {
+
+int rvfs_show(RVFSFile *f) {
   printf("is_dir\tsize\tname\n");
   _rvfs_show(f, f->name ? f->name : f->filepath);
-  return 1;
+  return(1);
 }

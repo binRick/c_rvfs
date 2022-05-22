@@ -27,9 +27,9 @@ HELP_STYLE=$(BLINE) -H -a ff00ff
 ##########################################################
 DEV_MAKE_TARGETS = \
 					clean \
-                	build \
-					test
+               		build
 DEV_TEST_TARGETS = \
+				   test \
 				   test-rvfs_e
 ##########################################################
 enabled-bins:
@@ -65,8 +65,9 @@ submodules-cmds:
 submodules-install:
 	@./scripts/submodule-cmds.sh|env bash
 ##//##//##//##//##//##//##//##//##//##//##//##	
-uncrustify:
-	@uncrustify -c etc/uncrustify.cfg --replace bins/*.c
+uncrustify: _uncrustify uncrustify-clean
+_uncrustify:
+	@uncrustify -c etc/uncrustify.cfg --replace bins/*.c src/*.c include/*.h
 	@shfmt -w scripts/*.sh
 fix-dbg:
 	@gsed 's|, % s);|, %s);|g' -i bins/*.c
@@ -74,7 +75,7 @@ fix-dbg:
 	@gsed 's|, % d);|, %d);|g' -i bins/*.c
 	@gsed 's|, % zu);|, %zu);|g' -i bins/*.c
 uncrustify-clean:   
-	@find . -type f -name "*unc-back*"|xargs -I % unlink %
+	@find . -type f -name "*unc-back*"|xargs -I % unlink % 2>/dev/null||true
 ##//##//##//##//##//##//##//##//##//##//##//##	
 test: _test test-rvfs_e 
 _test:

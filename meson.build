@@ -21,7 +21,6 @@ ensure_dev_includes = run_command(sh, '-c', '[[ -f include/embedded-colornames-d
 find_deps = run_command(sh, '-c', find_deps_cmd, check: true).stdout().strip().split('\n')
 enabled_bins = run_command(sh, '-c', find_enabled_bins_cmd, check: true).stdout().strip().split('\n')
 pwd = run_command(pwd_bin, check: true).stdout().strip()
-
 #//***********************************************************/
 inc = include_directories(
   '.',
@@ -29,6 +28,8 @@ inc = include_directories(
   './deps', 
   './submodules',
   './src', 
+  './submodules/c_stringfn/include', 
+  './submodules/c_fsio/include',
 )
 #//***********************************************************/
 foreach m : find_deps
@@ -49,6 +50,8 @@ deps += cc.find_library('m', required : true)
 #//***********************************************************/
 opts.set_override_option('werror', 'false')
 opts.set_override_option('warning_level', '1')
+opts.set_override_option('c_std','gnu99')
+opts.set_override_option('warning_level','0')
 #//***********************************************************/
 install_headers([])
 #//***********************************************************/

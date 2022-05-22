@@ -136,3 +136,9 @@
 [submodule "submodules/sqlite"]
 	path = submodules/sqlite
 	url = https://github.com/sqlite/sqlite
+[submodule "submodules/parson"]
+	path = submodules/parson
+	url = https://github.com/kgabis/parson
+[submodule "submodules/fsio"]
+	path = submodules/fsio
+	url = https://github.com/sagiegurari/c_fsio
