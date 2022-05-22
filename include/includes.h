@@ -1,10 +1,5 @@
 #pragma once
 //////////////////////////////
-#define DBG_H_DEF_ONCE
-#define DBG_H_NO_WARNING
-#define ASSERTF_DEF_ONCE
-#define LOG_LEVEL    ERROR
-//////////////////////////////
 #include "../include/includes-base.h"
 //////////////////////////////
 #include "../deps/b64/b64.h"
