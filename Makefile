@@ -37,18 +37,18 @@ DEV_TEST_TARGETS = \
 				   test-rvfs1
 ##//##//##//##//##//##//##//##//##//##//##//##	
 test-rvfs1:
-	@if [[ -f /tmp/rvfs1-src.rvfs ]]; then  unlink /tmp/rvfs1-src.rvfs; fi
+	@if [[ -f /tmp/rvfs1-meson.rvfs ]]; then  unlink /tmp/rvfs1-meson.rvfs; fi
 	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi
-	@./build/rvfs1 --help | $(TEST_TITLE)
-	@./build/rvfs1 package ./src /tmp/rvfs1-src.rvfs
-	@./build/rvfs1 show /tmp/rvfs1-src.rvfs
-	@./build/rvfs1 filesqty ////BAD-FILENAME || { $(ANSI) --green --bold -n "OK> " && $(ANSI) --red --bg-black --bold POSITIVE-FAILURE-CASE-0; }
-	@./build/rvfs1 filesqty /tmp/rvfs1-src.rvfs
-	@./build/rvfs1 filenames /tmp/rvfs1-src.rvfs
+	@$(PASSH) ./build/rvfs1 --help | $(TEST_TITLE)
+	@$(PASSH) ./build/rvfs1 package ./bins /tmp/rvfs1-meson.rvfs
+	@$(PASSH) ./build/rvfs1 show /tmp/rvfs1-meson.rvfs
+	@$(PASSH) ./build/rvfs1 filesqty ////BAD-FILENAME || { $(ANSI) --green --bold -n "OK> " && $(ANSI) --red --bg-black --bold POSITIVE-FAILURE-CASE-0; }
+	@$(PASSH) ./build/rvfs1 filesqty /tmp/rvfs1-meson.rvfs
+	@$(PASSH) ./build/rvfs1 filenames /tmp/rvfs1-meson.rvfs
 	@[[ -d /tmp/rvfs_e ]] || mkdir /tmp/rvfs1
-	@./build/rvfs_e extract /tmp/rvfs1-src.rvfs /tmp/rvfs1|$(RVFS1_STYLE)
+	@$(PASSH) ./build/rvfs_e extract /tmp/rvfs1-meson.rvfs /tmp/rvfs1|$(RVFS1_STYLE)
 	@{ find /tmp/rvfs1 -type f|xargs -I {} $(STAT) -c '%30n -> %sb' {}; } | $(BLINE) -a bold:yellow
-	@if [[ -f /tmp/rvfs1-src.rvfs ]]; then  unlink /tmp/rvfs1-src.rvfs; fi
+	@if [[ -f /tmp/rvfs1-meson.rvfs ]]; then  unlink /tmp/rvfs1-meson.rvfs; fi
 	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi
 	@$(ANSI) --green "test-rvfs1 Tests OK"
 ##########################################################

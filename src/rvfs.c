@@ -6,21 +6,27 @@ static unsigned int f_exists(const char *filepath) {
   return(access(filepath, F_OK) == 0);
 }
 
+static unsigned int is_compressed(const char *filepath) {
+    bool is_compressed = false;
+    return(is_compressed == 1);
+}
+
+static unsigned int is_encrypted(const char *filepath) {
+    bool is_encrypted = false;
+    return(is_encrypted == 1);
+}
 
 static unsigned int is_directory(const char *filepath) {
   struct stat statbuf;
-
-  if (stat(filepath, &statbuf) != 0) {
+  if (stat(filepath, &statbuf) != 0)
     return(0);
-  }
+
   return(S_ISDIR(statbuf.st_mode));
 }
 
-
 void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
-  if (!filepath) {
-    return;
-  }
+  if (!filepath) return;
+
   f->filepath_length = strlen(filepath);
   f->filepath        = strdup(filepath);
   f->bytes           = 0;
@@ -32,6 +38,8 @@ void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
   }
   f->is_directory    = is_directory(filepath);
   f->children_length = 0;
+  f->is_compressed   = is_compressed(filepath);
+  f->is_encrypted    = is_encrypted(filepath);
 
   if (f->is_directory) {
     DIR           *pdir = opendir(f->filepath);
@@ -87,6 +95,8 @@ void _rvfs_write(RVFSFile *f, FILE *fp) {
   fwrite(&f->size, sizeof(uint32_t), 1, fp);
   fwrite(&f->bytes[0], sizeof(uint8_t), f->size, fp);
   fwrite(&f->children_length, sizeof(uint32_t), 1, fp);
+  fwrite(&f->is_compressed, sizeof(uint8_t), 1, fp);
+  fwrite(&f->is_encrypted, sizeof(uint8_t), 1, fp);
 
   for (uint32_t i = 0; i < f->children_length; i++) {
     _rvfs_write(&f->children[i], fp);
@@ -116,6 +126,8 @@ void _rvfs_read(RVFSFile *f, FILE *fp) {
   fread(&f->bytes[0], sizeof(uint8_t), f->size, fp);
 
   fread(&f->children_length, sizeof(uint32_t), 1, fp);
+  fread(&f->is_compressed, sizeof(uint8_t), 1, fp);
+  fread(&f->is_encrypted, sizeof(uint8_t), 1, fp);
 
   f->children = (RVFSFile *)calloc(f->children_length, sizeof(RVFSFile));
 
@@ -163,6 +175,12 @@ void _rvfs_from_bytes(RVFSFile *f, uint8_t *raw_bytes, long unsigned int *ij) {
 
   memcpy(&f->children_length, &raw_bytes[i], sizeof(uint32_t) * 1);
   i += sizeof(uint32_t);
+
+  memcpy(&f->is_compressed, &raw_bytes[i], sizeof(uint8_t) * 1);
+  i += sizeof(uint8_t);
+
+  memcpy(&f->is_encrypted, &raw_bytes[i], sizeof(uint8_t) * 1);
+  i += sizeof(uint8_t);
 
   f->children = (RVFSFile *)calloc(f->children_length, sizeof(RVFSFile));
 
@@ -296,7 +314,10 @@ int _rvfs_show(RVFSFile *f, char *filepath) {
         strcat(newpath, "/");
       }
       strcat(newpath, child.name);
-      printf("%d\t%d\t%s\n", child.is_directory, child.size, newpath);
+      printf("%d\t%d\t%d\t%d\t%s\n", child.is_directory, child.size, 
+              child.is_compressed, child.is_encrypted,
+              newpath
+              );
       _rvfs_show(&child, newpath);
       free(newpath);
     }
@@ -307,7 +328,7 @@ int _rvfs_show(RVFSFile *f, char *filepath) {
 
 
 int rvfs_show(RVFSFile *f) {
-  printf("is_dir\tsize\tname\n");
+  printf("is_dir\tsize\tis_comp\tis_enc\tname\n");
   _rvfs_show(f, f->name ? f->name : f->filepath);
   return(1);
 }

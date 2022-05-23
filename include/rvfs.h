@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct RVFS_FILE_STRUCT {
   uint32_t                filepath_length;
@@ -10,6 +11,8 @@ typedef struct RVFS_FILE_STRUCT {
   uint32_t                size;
   uint8_t                 *bytes;
   uint32_t                children_length;
+  uint8_t                 is_compressed;
+  uint8_t                 is_encrypted;
   struct RVFS_FILE_STRUCT *children;
 } RVFSFile;
 
