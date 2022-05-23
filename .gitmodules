@@ -148,3 +148,15 @@
 [submodule "submodules/log.c"]
 	path = submodules/log.c
 	url = https://github.com/rxi/log.c
+[submodule "submodules/tinydir"]
+	path = submodules/tinydir
+	url = https://github.com/cxong/tinydir
+[submodule "submodules/uuid4"]
+	path = submodules/uuid4
+	url = https://github.com/rxi/uuid4
+[submodule "submodules/chan"]
+	path = submodules/chan
+	url = https://github.com/tylertreat/chan
+[submodule "submodules/kat"]
+	path = submodules/kat
+	url = https://github.com/Theldus/kat

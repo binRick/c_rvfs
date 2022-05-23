@@ -6,26 +6,36 @@ static unsigned int f_exists(const char *filepath) {
   return(access(filepath, F_OK) == 0);
 }
 
+
 static unsigned int is_compressed(const char *filepath) {
-    bool is_compressed = false;
-    return(is_compressed == 1);
+  bool is_compressed = false;
+
+  return(is_compressed == 1);
 }
 
+
 static unsigned int is_encrypted(const char *filepath) {
-    bool is_encrypted = false;
-    return(is_encrypted == 1);
+  bool is_encrypted = false;
+
+  return(is_encrypted == 1);
 }
+
 
 static unsigned int is_directory(const char *filepath) {
   struct stat statbuf;
-  if (stat(filepath, &statbuf) != 0)
+
+  if (stat(filepath, &statbuf) != 0) {
     return(0);
+  }
 
   return(S_ISDIR(statbuf.st_mode));
 }
 
+
 void rvfs_create_from(RVFSFile *f, const char *filepath, const char *name) {
-  if (!filepath) return;
+  if (!filepath) {
+    return;
+  }
 
   f->filepath_length = strlen(filepath);
   f->filepath        = strdup(filepath);
@@ -189,7 +199,7 @@ void _rvfs_from_bytes(RVFSFile *f, uint8_t *raw_bytes, long unsigned int *ij) {
   for (uint32_t k = 0; k < f->children_length; k++) {
     _rvfs_from_bytes(&f->children[k], raw_bytes, ij);
   }
-}
+} /* _rvfs_from_bytes */
 
 
 void rvfs_from_bytes(RVFSFile *f, uint8_t *raw_bytes, uint32_t len) {
@@ -314,10 +324,12 @@ int _rvfs_show(RVFSFile *f, char *filepath) {
         strcat(newpath, "/");
       }
       strcat(newpath, child.name);
-      printf("%d\t%d\t%d\t%d\t%s\n", child.is_directory, child.size, 
-              child.is_compressed, child.is_encrypted,
-              newpath
-              );
+      printf("%d\t%s\t%d\t%d\t%s\n",
+             child.is_directory,
+             bytes_to_string(child.size),
+             child.is_compressed, child.is_encrypted,
+             newpath
+             );
       _rvfs_show(&child, newpath);
       free(newpath);
     }

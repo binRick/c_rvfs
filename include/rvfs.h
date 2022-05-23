@@ -1,6 +1,6 @@
 #pragma once
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef struct RVFS_FILE_STRUCT {
   uint32_t                filepath_length;

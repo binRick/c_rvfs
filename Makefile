@@ -30,12 +30,20 @@ RVFS1_STYLE=$(BLINE) -a bold:italic:blue
 ##########################################################
 ##//##//##//##//##//##//##//##//##//##//##//##	
 DEV_MAKE_TARGETS = \
+				    reset \
                		build
+CLEAN_DEV_MAKE_TARGETS = \
+					clean \
+					$(DEV_MAKE_TARGETS)
 DEV_TEST_TARGETS = \
 				   test \
 				   test-rvfs_e \
 				   test-rvfs1
 ##//##//##//##//##//##//##//##//##//##//##//##	
+NODEMON_CMD = $(PASSH) -L .nodemon.log $(NODEMON) -I -V -w 'include/*.h' -w meson_options.txt -w meson -w meson.build -w bins -w src -w Makefile -i $(BUILD_DIR) -i submodules -i deps -e build,sh,c,h,Makefile -x env -- bash -c
+##//##//##//##//##//##//##//##//##//##//##//##	
+reset:
+	@reset
 test-rvfs1:
 	@if [[ -f /tmp/rvfs1-meson.rvfs ]]; then  unlink /tmp/rvfs1-meson.rvfs; fi
 	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi
@@ -115,7 +123,8 @@ ninja-build:
 	@ninja -C build -j $(NINJA_CONCURRENCY)
 _build: make-setup meson-build ninja-build
 build:
-	@make _build || { make clean && make _build; }
+	@make _build
+#	|| { make clean && make _build; }
 ##//##//##//##//##//##//##//##//##//##//##//##	
 all: build
 setup: clibs-install submodules-install tools
@@ -123,8 +132,10 @@ install:
 	@echo Install OK
 do-bins: make-bins
 ##//##//##//##//##//##//##//##//##//##//##//##	
+clean-dev: 
+	@$(NODEMON_CMD) 'make $(CLEAN_DEV_MAKE_TARGETS) $(DEV_TEST_TARGETS)||true'
 dev: 
-	@$(PASSH) -L .nodemon.log $(NODEMON) -I -V -w 'include/*.h' -w meson -w meson.build -w bins -w src -w Makefile -i $(BUILD_DIR) -i submodules -i deps -e build,sh,c,h,Makefile -x env -- bash -c 'make $(DEV_MAKE_TARGETS) $(DEV_TEST_TARGETS)||true'
+	@$(NODEMON_CMD) 'make $(DEV_MAKE_TARGETS) $(DEV_TEST_TARGETS)||true'
 nodemon:
 	@$(PASSH) make
 ##//##//##//##//##//##//##//##//##//##//##//##	

@@ -1,17 +1,13 @@
-option('example',
-  type : 'boolean',
-  value : false,
-  description : 'Here is a sample option'
-)
 
-option('enable-tests',
+option('enable-binaries',
   type : 'boolean',
   value : true,
-  description : 'Enables tests.'
+  description : 'Enables binaries.'
 )
 
-option('enable-benchmarks',
+option('enable-binary-tests',
   type : 'boolean',
   value : true,
-  description : 'Enables benchmarks.'
+  description : 'Enables binary tests.'
 )
+
