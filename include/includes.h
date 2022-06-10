@@ -1,5 +1,7 @@
 #pragma once
 //////////////////////////////
+#include "../include/includes-module.h"
+//////////////////////////////
 #include "../submodules/c_stringfn/include/stringfn.h"
 //////////////////////////////
 #include "../include/includes-base.h"
@@ -9,6 +11,7 @@
 #include "../submodules/log.c/src/log.h"
 //////////////////////////////
 #include "../submodules/c_fsio/include/fsio.h"
+//////////////////////////////
 //////////////////////////////
 #include "../deps/bytes/bytes.h"
 #include "../deps/commander/commander.h"

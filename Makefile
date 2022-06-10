@@ -43,7 +43,37 @@ DEV_TEST_TARGETS = \
 NODEMON_CMD = $(PASSH) -L .nodemon.log $(NODEMON) -I -V -w 'include/*.h' -w meson_options.txt -w meson -w meson.build -w bins -w src -w Makefile -i $(BUILD_DIR) -i submodules -i deps -e build,sh,c,h,Makefile -x env -- bash -c
 ##//##//##//##//##//##//##//##//##//##//##//##	
 reset:
-	@reset
+	@rese
+
+
+RVFS1_SRC_DIR  = $(PWD)/include
+RVFS1_DST_FILE = $(PWD)/rvfs1.rvfs
+RVFS1_DST_FILE1 = $(PWD)/include.rvfs
+RVFS1_OBJ_FILE = $(PWD)/rvfs1.o
+RVFS1_BINARY = $(PWD)/build/rvfs1
+RVFS1_CEMBED_FILE = $(PWD)/loaders/rvfs1.c_embed
+OBJCOPY_BIN = $(shell command -v x86_64-elf-objcopy)
+RVFS1_DST_FILE_CEMBED_CMD = c_embed -o $(RVFS1_CEMBED_FILE) -t tbl $(shell basename $(RVFS1_DST_FILE)) $(shell basename $(RVFS1_DST_FILE1))
+RVFS1_LOADER_BUILD_CMD = cd loaders && meson build --wipe && ninja -C build
+RVFS1_LOADER_LOAD_CMD = ./loaders/build/rvfs1_loader load
+
+rvfs1-package:
+	@$(PASSH) $(RVFS1_BINARY) package $(RVFS1_SRC_DIR) $(RVFS1_DST_FILE)
+	@$(PASSH) $(RVFS1_BINARY) package src $(RVFS1_DST_FILE1)
+	@$(PASSH) $(RVFS1_BINARY) show $(RVFS1_DST_FILE)
+	$(PASSH) $(RVFS1_DST_FILE_CEMBED_CMD)
+	@tail -n 3 $(RVFS1_CEMBED_FILE)
+
+rvfs1-c_embed:
+	@c_embed -o loaders/c_embed/tbl1.c_embed -z -t tbl meson_options.txt clib.json
+	@$(RVFS1_LOADER_BUILD_CMD)
+	@$(RVFS1_LOADER_LOAD_CMD)
+
+rvfs1-loader:
+	$(PASSH) $(RVFS1_LOADER_BUILD_CMD)
+#	$(PASSH) $(RVFS1_LOADER_LOAD_CMD)
+
+
 test-rvfs1:
 	@if [[ -f /tmp/rvfs1-meson.rvfs ]]; then  unlink /tmp/rvfs1-meson.rvfs; fi
 	@if [[ -d /tmp/rvfs1 ]]; then rm -rf /tmp/rvfs1; fi

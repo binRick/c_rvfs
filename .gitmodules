@@ -127,9 +127,6 @@
 [submodule "submodules/csplit"]
 	path = submodules/csplit
 	url = https://github.com/jwlodek/csplit
-[submodule "submodules/boydemdb"]
-	path = submodules/boydemdb
-	url = https://github.com/dimkr/boydemdb
 [submodule "submodules/colorin"]
 	path = submodules/colorin
 	url = https://github.com/Lunlumo-ex-machina/colorin
