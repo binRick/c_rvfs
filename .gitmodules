@@ -157,3 +157,6 @@
 [submodule "submodules/kat"]
 	path = submodules/kat
 	url = https://github.com/Theldus/kat
+[submodule "submodules/meson_deps"]
+	path = submodules/meson_deps
+	url = https://github.com/binRick/meson_deps
